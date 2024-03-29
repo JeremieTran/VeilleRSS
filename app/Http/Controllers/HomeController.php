@@ -33,17 +33,17 @@ class HomeController extends Controller
         if (Auth::check()) {
             // Récupérer l'utilisateur connecté
             $user = Auth::user();
-
+            $categories = $user->categories()->with('subcategories')->get();
             // Récupérer les catégories liées à l'utilisateur connecté avec leurs sous-catégories
             $parentCategories = $user->categories()->with(['children' => function ($query) use ($user) {
                 $query->where('users_id', $user->id);
             }])->whereNull('parent_id')->get();
             
-            return view('services', ['parentCategories' => $parentCategories]);
+            return view('services', compact('categories','parentCategories'));
         } else {
             // Si aucun utilisateur n'est connecté, renvoyer toutes les catégories
             $parentCategories = Category::whereNull('parent_id')->get();
-            return view('services', ['parentCategories' => $parentCategories]);
+            return view('services', compact('categories','parentCategories'));
         }
     }
 }

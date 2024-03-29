@@ -11,8 +11,11 @@ class CategoryController extends Controller
 {
     public function create()
     {
+        $categories = $user->categories()->with('subcategories')->get();
         $parentCategories = Category::whereNull('parent_id')->get();
-        return view('create_category', ['parentCategories' => $parentCategories]);
+        return view('create_category', compact('categories','parentCategories'));
+ 
+        
     }
     
     public function store(Request $request)
@@ -20,6 +23,7 @@ class CategoryController extends Controller
         // Validation des données
         $request->validate([
             'subcategory_name' => 'required|string|max:255',
+            'rss_url' => 'nullable|url|max:255', // Validation de l'URL du flux RSS
         ]);
 
         // Création de la sous-catégorie

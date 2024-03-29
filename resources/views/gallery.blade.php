@@ -1,64 +1,109 @@
 <!DOCTYPE html>
-<html lang="en-US">
-   <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Top Veille - Le site de référence de la veille informatique</title>
-      <link rel="stylesheet" href="css/components.css">
-      <link rel="stylesheet" href="css/icons.css">
-      <link rel="stylesheet" href="css/users.css">
-      <link rel="stylesheet" href="css/responsee.css">
-      <link rel="stylesheet" href="owl-carousel/owl.carousel.css">
-      <link rel="stylesheet" href="owl-carousel/owl.theme.css">
-      <!-- CUSTOM STYLE -->      
-      <link rel="stylesheet" href="css/template-style.css">
-      <link href="https://fonts.googleapis.com/css?family=Barlow:100,300,400,700,800&amp;subset=latin-ext" rel="stylesheet">  
-      <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
-      <script type="text/javascript" src="js/jquery-ui.min.js"></script>  
+        <html lang="en-US">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>Top Veille - Le site de référence de la veille informatique</title>
+            <link rel="stylesheet" href="css/components.css">
+            <link rel="stylesheet" href="css/icons.css">
+            <link rel="stylesheet" href="css/responsee.css">
+            <link rel="stylesheet" href="owl-carousel/owl.carousel.css">
+            <link rel="stylesheet" href="owl-carousel/owl.theme.css">
+            <!-- CUSTOM STYLE -->      
+            <link rel="stylesheet" href="css/template-style.css">
+            <link href="https://fonts.googleapis.com/css?family=Barlow:100,300,400,700,800&amp;subset=latin-ext" rel="stylesheet">  
+            <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+            <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/FeedEk/3.2.0/js/FeedEk.min.js"></script>
+            <style>
+                    /* Style pour la mise en forme */
+                    .gridiv {
+                        display: grid;
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 20px;
+                    }
 
-   </head>
+                    .rss-feed {
+                        background-color: #f4f4f4;
+                        border-radius: 10px;
+                        padding: 20px;
+                    }
 
-   <!--
-    You can change the color scheme of the page. Just change the class of the <body> tag. 
-    You can use this class: "primary-color-white", "primary-color-red", "primary-color-orange", "primary-color-blue", "primary-color-aqua", "primary-color-dark" 
-    -->
-    
-    <!--
-    Each element is able to have its own background or text color. Just change the class of the element.  
-    You can use this class: 
-    "background-white", "background-red", "background-orange", "background-blue", "background-aqua", "background-primary" 
-    "text-white", "text-red", "text-orange", "text-blue", "text-aqua", "text-primary"
-    -->
+                    .rss-feed h2 {
+                        margin-top: 0;
+                    }
 
-    <body class="size-1520 primary-color-red background-dark">
-      <!-- HEADER -->
-      <header class="grid">
-        <!-- Top Navigation -->
-        <nav class="s-12 grid background-none background-primary-hightlight">
-           <!-- logo -->
-           <a href="{{ url('/index') }}" class="m-12 l-3 padding-2x logo">
-              <img src="img/logo.png">
-           </a>
-          @if (Route::has('login'))
-           <div class="top-nav s-12 l-9"> 
-              <ul class="top-ul right chevron">
-                <li><a href="{{ url('/index') }}">Accueil</a></li>
-                <li><a href="{{ url('/about-us') }}">A propos</a></li>
-                <li><a href="{{ url('/services') }}">Services</a></li>
-                <li><a href="{{ url('/gallery') }}">Utilisateurs</a></li>
-            @auth
-                <li><a href="{{ url('/dashboard') }}">Accueil</a></li>
-            @else
-                <li><a href="{{ route('login') }}">Connexion</a></li>
-                @if (Route::has('register'))
-                <li><a href="{{ route('register') }}">S'inscrire</a></li>
+                    .rss-content {
+                        /* Ajoutez ici le style de votre choix pour le contenu du flux RSS */
+                    }
+                </style>  
+        </head>
+
+        <!--
+            You can change the color scheme of the page. Just change the class of the <body> tag. 
+            You can use this class: "primary-color-white", "primary-color-red", "primary-color-orange", "primary-color-blue", "primary-color-aqua", "primary-color-dark" 
+            -->
+            
+            <!--
+            Each element is able to have its own background or text color. Just change the class of the element.  
+            You can use this class: 
+            "background-white", "background-red", "background-orange", "background-blue", "background-aqua", "background-primary" 
+            "text-white", "text-red", "text-orange", "text-blue", "text-aqua", "text-primary"
+            -->
+
+        <body class="size-1520 primary-color-red background-dark">
+            <!-- HEADER -->
+            <header class="grid">
+            <!-- Top Navigation -->
+            <nav class="s-12 grid background-none background-primary-hightlight">
+                <!-- logo -->
+                <a href="{{ url('/index') }}" class="m-12 l-3 padding-2x logo">
+                    <img src="img/logo.png">
+                </a>
+                @if (Route::has('login'))
+                <div class="top-nav s-12 l-9">
+                    <ul class="top-ul right chevron">
+                        <li><a href="{{ url('/') }}">Accueil</a></li>
+                        <li>
+                        <a href="#">Mes Catégories</a>
+                            <ul>
+                                @foreach($parentCategories as $parentCategory)
+                                    <li>{{ $parentCategory->name }}
+                                        @if($parentCategory->children->count() > 0)
+                                            <ul>
+                                                @foreach($parentCategory->children as $childCategory)
+                                                    <li>{{ $childCategory->name }}</li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </li>
+                        <li><a href="{{ url('/services') }}">Personnaliser</a></li>
+                        <li><a href="{{ url('/gallery') }}">Utilisateurs</a></li>
+                        @auth
+                        <li>
+                            <a href="{{ url('/profile') }}">{{ Auth::user()->name }}</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Déconnexion</a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </li>
+                        @else
+                        <li><a href="{{ route('login') }}">Connexion</a></li>
+                        @if (Route::has('register'))
+                        <li><a href="{{ route('register') }}">S'inscrire</a></li>
+                        @endif
+                        @endauth
+                    </ul>
+                </div>
                 @endif
-            @endauth
-              </ul>
-           </div>
-          @endif
-        </nav>
-      </header>
+            </nav>
+        </header>
       
       <!-- MAIN -->
          <main role="main">

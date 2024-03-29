@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\RssController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -58,6 +59,12 @@ Route::get('/services', [HomeController::class, 'services'])->name('services');
 Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
 Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
 Route::post('/categories/create', [CategoryController::class, 'storeCategory'])->name('categories.storeCategory');
+
+// Définir la route pour afficher le formulaire de création de flux RSS
+Route::get('/rss/create', [RssController::class, 'create'])->name('rss.create');
+
+// Définir la route pour enregistrer le flux RSS
+Route::post('/rss', [RssController::class, 'store'])->name('rss.store');
 
 // Route::get('/', function () {
 //     return view('index');
