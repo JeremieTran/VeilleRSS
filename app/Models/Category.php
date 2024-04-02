@@ -28,4 +28,8 @@ class Category extends Model
     {
         return $this->hasMany(Category::class, 'parent_id');
     }
+    public function flux()
+    {
+        return $this->hasMany(FluxRss::class, 'category_id');
+    }
 }

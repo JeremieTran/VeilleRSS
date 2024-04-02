@@ -9,6 +9,8 @@
             <link rel="stylesheet" href="css/responsee.css">
             <link rel="stylesheet" href="owl-carousel/owl.carousel.css">
             <link rel="stylesheet" href="owl-carousel/owl.theme.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
             <!-- CUSTOM STYLE -->      
             <link rel="stylesheet" href="css/template-style.css">
             <link href="https://fonts.googleapis.com/css?family=Barlow:100,300,400,700,800&amp;subset=latin-ext" rel="stylesheet">  
@@ -37,12 +39,14 @@
                     .rss-content {
                         /* Ajoutez ici le style de votre choix pour le contenu du flux RSS */
                     }
-                    .container {
-                    text-align: center;
+                    .big-container {
+                    display:flex;
+                    justify-content:space-between;
                     }
 
                     .formulaire {
                     border-radius: 5px;
+                    text-align: center;
                     }
                     .button {
                     background-color: #1E90FF; /* Couleur de fond */
@@ -64,6 +68,14 @@
                     }
                     footer {
                     margin-top: 60px;
+                    }
+                    /* Style pour les blocs de catégorie, sous-catégorie et flux */
+                    .category-block {
+                        display: inline-block;
+                        margin: 20px; /* Marge entre les blocs */
+                        vertical-align: top; /* Alignement vertical au-dessus pour garder les blocs alignés */
+                        border: 1px solid WHITE; /* Bordure de 1 pixel solide noire */
+                        padding: 10px; /* Espacement intérieur de 10 pixels */
                     }
 
                 </style>  
@@ -111,7 +123,6 @@
                             </ul>
                         </li>
                         <li><a href="{{ route('services') }}">Personnaliser</a></li>
-                        <li><a href="{{ url('/gallery') }}">Utilisateurs</a></li>
                         @auth
                         <li>
                             <a href="{{ url('/profile') }}">{{ Auth::user()->name }}</a>
@@ -141,23 +152,97 @@
             <h1 class="text-strong text-white text-center center text-size-60 text-uppercase margin-bottom-20">Personnaliser mes flux</h1>
           </div>
         </header>
-        <div class="container">
             <div>
-                @foreach($categories as $category)
-                    @foreach($category->subcategories as $subcategory)
-                        <h3>{{ $subcategory->name }}</h3>
-                        @if($subcategory->flux?->isNotEmpty())
-                            <ul>
-                                @foreach($subcategory->flux as $flux)
-                                    <li>{{ $flux->url }}</li>
+                @foreach($categories->where('parent_id', null) as $parentCategory)
+                    <div class="category-block">
+                        <form action="{{ route('category.delete', ['categoryId' => $parentCategory->id]) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <h3><span style="background-color: green; border-radius: 5px; padding: 2px;"> Catégorie : </span><br> {{ $parentCategory->name }}
+                                <button type="submit" name="action" value="delete"><i class="fas fa-times" style="color: red;"></i></button>
+                            </h3>
+                        </form>
+
+                        @if($parentCategory->subcategories->isNotEmpty())
+                            <div class="subcategory-block">
+                                @foreach($parentCategory->subcategories as $subcategory)
+                                    <form action="{{ route('subcategory.delete', ['parentId' => $parentCategory->id, 'subcategoryId' => $subcategory->id]) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <h3><span style="background-color: #FF0000; border-radius: 5px; padding: 2px;">Sous-Catégorie :</span> <br>{{ $subcategory->name }}
+                                            <button type="submit" name="action" value="delete"><i class="fas fa-times" style="color: red;"></i></button>
+                                        </h3>
+                                    </form>
+
+                                    @if($subcategory->flux?->isNotEmpty())
+                                        <ul>
+                                            @foreach($subcategory->flux as $flux)
+                                                <li>
+                                                    <form action="{{ route('updateFlux', ['id' => $flux->id]) }}" method="post" class="flux-info">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <h3>URL: 
+                                                            <input type="text" name="url" value="{{ $flux->url }}" readonly>
+                                                            <input type="hidden" name="action" value="edit">
+                                                            <button type="button" onclick="enableEdit(this)"><i class="fas fa-pencil-alt" style="color: blue;"></i></button>
+                                                            <button type="submit" > <i class="fas fa-check" style="color: green;"></i></button>
+                                                            <button type="submit" name="action" value="delete"><i class="fas fa-times" style="color: red;"></i></button>
+                                                        </h3>
+                                                    </form>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @else
+                                        <p>Aucun flux associé à cette sous-catégorie.</p>
+                                    @endif
                                 @endforeach
-                            </ul>
+                            </div>
                         @else
-                            <p>Aucun flux associé à cette sous-catégorie.</p>
+                            <p>Aucune sous-catégorie associée à cette catégorie.</p>
                         @endif
-                    @endforeach
+                    </div>
                 @endforeach
             </div>
+
+            <script>
+                function enableEdit(button) {
+                    var form = button.closest('form'); // Trouver le formulaire parent
+                    var inputs = form.querySelectorAll('input[type="text"]');
+
+                    inputs.forEach(function(input) {
+                        input.removeAttribute('readonly');
+                    });
+
+                    // Trouver le champ caché pour l'action et le définir sur 'edit'
+                    var actionInput = form.querySelector('input[name="action"]');
+                    if (actionInput) {
+                        actionInput.value = 'edit';
+                    }
+
+                    button.style.display = 'none'; // Masquer le bouton Modifier après l'édition des champs
+                }
+            </script>
+            <script>
+                // Récupérer le message d'erreur de la session (s'il existe)
+                let errorMessage = '{{ session('error') }}';
+
+                // Vérifier si un message d'erreur existe
+                if (errorMessage) {
+                    // Afficher une modale d'erreur avec le message récupéré
+                    alert(errorMessage);
+                }
+            </script>
+            <script>
+                // Récupérer le message d'erreur de la session (s'il existe)
+                let errorMessage = '{{ session('error') }}';
+
+                // Vérifier si un message d'erreur existe
+                if (errorMessage) {
+                    // Afficher une modale d'erreur avec le message récupéré
+                    alert(errorMessage);
+                }
+            </script>
+
 
 
             <div class="formulaire">

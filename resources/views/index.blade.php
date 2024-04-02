@@ -82,7 +82,6 @@
                         </ul>
                     </li>
                     <li><a href="{{ url('services') }}">Personnaliser</a></li>
-                    <li><a href="{{ url('/gallery') }}">Utilisateurs</a></li>
                     @auth
                     <li>
                         <a href="{{ url('/profile') }}">{{ Auth::user()->name }}</a>
@@ -116,7 +115,7 @@
         
         <script>
             $('#rss-feed').FeedEk({
-                FeedUrl: 'http://feeds.feedburner.com/phoenixjp/rXiW',
+                FeedUrl: 'https://www.jeuxvideo.com/rss/rss.xml',
                 MaxCount: 10, // Nombre maximum d'articles à afficher
                 ShowDesc: true, // Afficher la description des articles
                 ShowPubDate: true // Afficher la date de publication des articles

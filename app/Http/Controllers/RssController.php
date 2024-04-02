@@ -2,14 +2,46 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
-use App\Models\Category;
 use App\Models\FluxRss;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator; // Importer la classe Validator
 
 class RssController extends Controller
 {
+    public function edit($id)
+    {
+        // Récupérer le flux à modifier
+        $flux = FluxRss::findOrFail($id);
+
+        // Afficher le formulaire de modification avec les données du flux
+        return view('services', compact('flux'));
+    }
+
+    public function updateFlux(Request $request, $id)
+    {
+        // Récupérer le flux à mettre à jour
+        $flux = FluxRss::findOrFail($id);
+    
+        // Vérifier l'action demandée
+        if ($request->action == 'edit') {
+            // Mettre à jour les données du flux avec les nouvelles valeurs
+            $flux->url = $request->input('url');
+            $flux->save();
+    
+            // Redirection avec un message de succès
+            return redirect()->back()->with('success', 'Flux mis à jour avec succès.');
+        } elseif ($request->action == 'delete') {
+            // Supprimer le flux
+            $flux->delete();
+    
+            // Redirection avec un message de succès
+            return redirect()->back()->with('success', 'Flux supprimé avec succès.');
+        }
+    
+        // Si l'action n'est ni "edit" ni "delete", rediriger avec un message d'erreur
+        return redirect()->back()->with('error', 'Action non reconnue.');
+    }
+
     public function create()
     {
         // Récupérer l'utilisateur connecté

@@ -59,12 +59,26 @@ Route::get('/services', [HomeController::class, 'services'])->name('services');
 Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
 Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
 Route::post('/categories/create', [CategoryController::class, 'storeCategory'])->name('categories.storeCategory');
+Route::delete('/category/{parentId}/subcategory/{subcategoryId}', [CategoryController::class, 'deleteSubCategory'])->name('subcategory.delete');
+Route::delete('/category/{categoryId}', [CategoryController::class, 'deleteCategory'])->name('category.delete');
+
 
 // Définir la route pour afficher le formulaire de création de flux RSS
 Route::get('/rss/create', [RssController::class, 'create'])->name('rss.create');
 
 // Définir la route pour enregistrer le flux RSS
 Route::post('/rss', [RssController::class, 'store'])->name('rss.store');
+
+Route::middleware('auth')->group(function () {
+    // Route pour afficher le formulaire de modification d'un flux
+    Route::get('/rss/{id}/edit', [RssController::class, 'edit'])->name('rss.edit');
+
+    // Route pour mettre à jour un flux
+    Route::put('/rss/{id}', [RssController::class, 'updateFlux'])->name('updateFlux');
+
+    // Route pour supprimer un flux
+    Route::delete('/rss/{id}', [RssController::class, 'destroy'])->name('rss.destroy');
+});
 
 // Route::get('/', function () {
 //     return view('index');

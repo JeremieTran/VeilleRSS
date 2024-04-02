@@ -60,6 +60,51 @@ class CategoryController extends Controller
         // Redirection vers la même page
         return redirect()->back()->with('success', 'Catégorie créée avec succès.');
     }
+    public function deleteCategory(Request $request, $categoryId)
+    {
+        // Récupérer la catégorie à supprimer
+        $category = Category::findOrFail($categoryId);
+    
+        // Vérifier si la catégorie existe
+        if (!$category) {
+            return redirect()->back()->with('error', 'Catégorie non trouvée.');
+        }
+    
+        // Vérifier si des sous-catégories sont associées à cette catégorie
+        if ($category->children()->exists()) {
+            // Si des sous-catégories existent, renvoyer un message d'erreur
+            return redirect()->back()->with('error', 'Supprimez en premier les sous-catégories avant de supprimer cette catégorie.');
+        }
+    
+        // Si aucune sous-catégorie n'est associée, supprimer la catégorie
+        if ($request->action == 'delete') {
+            $category->delete();
+            return redirect()->back()->with('success', 'Catégorie supprimée avec succès.');
+        }
+    }
+    public function deleteSubCategory(Request $request, $parentId, $subcategoryId)
+    {
+        // Récupérer la sous-catégorie à supprimer
+        $subcategory = Category::where('parent_id', $parentId)->findOrFail($subcategoryId);
+    
+        // Vérifier si la sous-catégorie existe
+        if (!$subcategory) {
+            return redirect()->back()->with('error', 'Sous-catégorie non trouvée.');
+        }
+        // Vérifier s'il y a des flux RSS associés à cette sous-catégorie
+        if ($subcategory->flux()->count() > 0) {
+            // S'il y a des flux RSS, retourner un message d'erreur
+            return redirect()->back()->with('error', 'Veuillez supprimer en premier les flux RSS associés à cette sous-catégorie.');
+        }
+        // Vérifier l'action demandée
+        if ($request->action == 'delete') {
+            // Supprimer la sous-catégorie
+            $subcategory->delete();
+    
+            // Redirection avec un message de succès
+            return redirect()->back()->with('success', 'Sous-catégorie supprimée avec succès.');
+        }
+    }
 }
    
 
