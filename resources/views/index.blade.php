@@ -151,22 +151,22 @@
                 <!-- SECTION 1 --> 
                 
           <section class="grid margin text-center">
-          <a href="/" class="s-12 m-6 l-3 padding-2x vertical-center margin-bottom background-red">
+          <a href="https://www.jeuxvideo.com/jvxml.htm" class="s-12 m-6 l-3 padding-2x vertical-center margin-bottom background-red">
             <i class="icon-sli-equalizer text-size-60 text-white center margin-bottom-15"></i>
             <h3 class="text-strong text-size-20 text-line-height-1 margin-bottom-30 text-uppercase">Actus Gaming</h3>
           </a>
-          <a href="/" class="s-12 m-6 l-3 padding-2x vertical-center margin-bottom background-blue">
+          <a href="https://www.bfmtv.com/tech/vie-numerique/" class="s-12 m-6 l-3 padding-2x vertical-center margin-bottom background-blue">
             <i class="icon-sli-layers text-size-60 text-white center margin-bottom-15"></i>
             <h3 class="text-strong text-size-20 text-line-height-1 margin-bottom-30 text-uppercase">Le High-Tech</h3>
           </a>
           
-          <a href="/" class="s-12 m-6 l-3 padding-2x vertical-center margin-bottom background-orange">
+          <a href="https://actucrypto.info/" class="s-12 m-6 l-3 padding-2x vertical-center margin-bottom background-orange">
             <i class="icon-sli-diamond text-size-60 text-white center margin-bottom-15"></i>
             <h3 class="text-strong text-size-20 text-line-height-1 margin-bottom-30 text-uppercase">Crypto, on en parle ?</h3>
           </a>
-          <a href="/" class="s-12 m-6 l-3 padding-2x vertical-center margin-bottom background-aqua">
+          <a href="http://atlasflux.saynete.net/" class="s-12 m-6 l-3 padding-2x vertical-center margin-bottom background-aqua">
             <i class="icon-sli-share text-size-60 text-white center margin-bottom-15"></i>
-            <h3 class="text-strong text-size-20 text-line-height-1 margin-bottom-30 text-uppercase">Toutes les catégories</h3>
+            <h3 class="text-strong text-size-20 text-line-height-1 margin-bottom-30 text-uppercase">Annuaire de flux</h3>
           </a>
         </section>
         <!-- TOP SECTION -->
