@@ -106,22 +106,6 @@
                 <div class="top-nav s-12 l-9">
                     <ul class="top-ul right chevron">
                         <li><a href="{{ url('/') }}">Accueil</a></li>
-                        <li>
-                        <a href="#">Mes Catégories</a>
-                            <ul>
-                                @foreach($parentCategories as $parentCategory)
-                                    <li>{{ $parentCategory->name }}
-                                        @if($parentCategory->children->count() > 0)
-                                            <ul>
-                                                @foreach($parentCategory->children as $childCategory)
-                                                    <li>{{ $childCategory->name }}</li>
-                                                @endforeach
-                                            </ul>
-                                        @endif
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </li>
                         <li><a href="{{ route('services') }}">Personnaliser</a></li>
                         @auth
                         <li>
@@ -150,6 +134,10 @@
         <header class="grid">
         	<div class="s-12 padding-2x">
             <h1 class="text-strong text-white text-center center text-size-60 text-uppercase margin-bottom-20">Personnaliser mes flux</h1>
+            <div style="background-color: green; border-radius: 5px; padding: 10px; width: 40%; height: 30%; margin: auto;">
+            <a href="#creation" class="text-strong text-white text-center center text-size-30 text-uppercase margin-bottom-20">
+            <h3>Créer une catégorie, sous-catégorie ou flux</h3></a>
+            </div>
           </div>
         </header>
             <div>
@@ -245,7 +233,7 @@
 
 
 
-            <div class="formulaire">
+            <div id="creation" class="formulaire">
                 <h2>Créer une catégorie</h2>
                 <form method="POST" action="{{ route('categories.storeCategory') }}">
                 @csrf

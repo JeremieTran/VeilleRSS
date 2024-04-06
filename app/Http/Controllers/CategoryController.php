@@ -6,6 +6,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Models\FluxRss;
 
 class CategoryController extends Controller
 {
@@ -105,6 +106,7 @@ class CategoryController extends Controller
             return redirect()->back()->with('success', 'Sous-catégorie supprimée avec succès.');
         }
     }
+
 }
    
 

@@ -16,6 +16,7 @@
           <script type="text/javascript" src="js/jquery-ui.min.js"></script>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/FeedEk/3.2.0/js/FeedEk.min.js"></script>
+          <script src="https://storage.googleapis.com/feednami-static/js/feednami-client-v1.0.1.js"></script>
           <style>
                 /* Style pour la mise en forme */
                 .gridiv {
@@ -28,6 +29,7 @@
                     background-color: #f4f4f4;
                     border-radius: 10px;
                     padding: 20px;
+                    text-align: center;
                 }
 
                 .rss-feed h2 {
@@ -37,6 +39,62 @@
                 .rss-content {
                     /* Ajoutez ici le style de votre choix pour le contenu du flux RSS */
                 }
+                .article-title {
+                    color: #fff; /* Police blanche */
+                    font-size: 30; /* Taille de la police plus grosse */
+                    /* Autres styles CSS selon vos besoins */
+                }
+                .container {
+                    text-align: center; /* Centrer le contenu horizontalement */
+                    margin-top: 50px; /* Espace en haut de la page */
+                }
+
+                #subcategory-select {
+                    padding: 10px; /* Ajouter de l'espace autour du sélecteur */
+                    font-size: 16px; /* Taille de la police */
+                    border-radius: 5px; /* Coins arrondis */
+                }
+
+                .gridiv {
+                    margin-top: 20px; /* Espace entre la liste déroulante et la div rss-feed */
+                    text-align: left; /* Aligner le contenu de la div rss-feed à gauche */
+                }
+
+                .article {
+                    margin-bottom: 20px; /* Espace entre chaque article */
+                }
+
+                .article-title {
+                    margin-bottom: 10px; /* Espace entre le titre et le reste du contenu */
+                    color: black; /* Texte en noir */
+                    font-weight: bold; /* Texte en gras */
+                    text-decoration: underline; /* Texte souligné */
+                    font-size: 16px; /* Taille de la police */
+                }
+
+                .article img {
+                    display: block; /* Afficher l'image en tant que bloc */
+                    margin: 0 auto; /* Centrer l'image horizontalement */
+                }
+                .gridiv {
+                    display: flex;
+                    justify-content: center;
+                }
+
+                .grid-container {
+                    display: grid;
+                    grid-template-columns: repeat(2, minmax(0, 1fr)); /* Utiliser minmax(0, 1fr) pour permettre la réduction de la taille des colonnes */
+                    gap: 20px; /* Espace entre les colonnes */
+                }
+
+                .article {
+                    max-width: 100%; /* Ajuster la largeur des articles pour s'adapter aux colonnes */
+                    text-align: center; /* Centrer le texte à l'intérieur des articles */
+                    background-color: #cce6ff; /* Fond bleu clair */
+                    color: white; /* Texte en blanc */
+                    padding: 20px; /* Ajouter un espace intérieur pour améliorer la lisibilité */
+                }
+
             </style>  
       </head>
 
@@ -60,27 +118,12 @@
             <!-- logo -->
             <a href="{{ url('/index') }}" class="m-12 l-3 padding-2x logo">
                 <img src="img/logo.png">
+                <h6> Le site de veille par excellence </h6>
             </a>
             @if (Route::has('login'))
             <div class="top-nav s-12 l-9">
                 <ul class="top-ul right chevron">
                     <li><a href="{{ url('/') }}">Accueil</a></li>
-                    <li>
-                      <a href="#">Mes Catégories</a>
-                        <ul>
-                            @foreach($parentCategories as $parentCategory)
-                                <li>{{ $parentCategory->name }}
-                                    @if($parentCategory->children->count() > 0)
-                                        <ul>
-                                            @foreach($parentCategory->children as $childCategory)
-                                                <li>{{ $childCategory->name }}</li>
-                                            @endforeach
-                                        </ul>
-                                    @endif
-                                </li>
-                            @endforeach
-                        </ul>
-                    </li>
                     <li><a href="{{ url('services') }}">Personnaliser</a></li>
                     @auth
                     <li>
@@ -105,41 +148,9 @@
     </header>
       <!-- MAIN -->
       <main role="main">
-        <!-- TOP SECTION -->
-      <div class="gridiv">
-        <div id="rss-feed"></div>
-      </div>
-        <section class="grid">
-            <!-- Div où vous souhaitez afficher le flux RSS -->
-        <!-- Script pour configurer et afficher le flux RSS -->
-        
-        <script>
-            $('#rss-feed').FeedEk({
-                FeedUrl: 'https://www.jeuxvideo.com/rss/rss.xml',
-                MaxCount: 10, // Nombre maximum d'articles à afficher
-                ShowDesc: true, // Afficher la description des articles
-                ShowPubDate: true // Afficher la date de publication des articles
-            });
-        </script>
-          <!-- Main Carousel -->
-          <div class="s-12 margin-bottom carousel-fade-transition owl-carousel carousel-main carousel-nav-white carousel-hide-arrows background-dark">
-          	<div class="item background-image" style="background-image:url(img/carousel-02.jpg)">
-              <p class="text-padding text-strong text-white text-s-size-30 text-size-60 text-uppercase background-primary">Leader de la veille technologique</p>
-              <p class="text-padding text-size-20 text-dark text-uppercase background-white">Toutes les informations sur un seul site.</p>
-            </div>
-          	<div class="item background-image" style="background-image:url(img/carousel-03.jpg)">
-              <p class="text-padding text-strong text-white text-s-size-30 text-size-60 text-uppercase background-primary">Votre dashboard personnalisé</p>
-              <p class="text-padding text-size-20 text-dark text-uppercase background-white">Sélectionnez seulement les infos qui vous intéresse.</p>
-            </div>
-            <div class="item background-image" style="background-image:url(img/carousel-01.jpg)">
-              <p class="text-padding text-strong text-white text-s-size-30 text-size-60 text-uppercase background-primary">Plus de 10 000 sites référencés</p>
-              <p class="text-padding text-size-20 text-dark text-uppercase background-white">Et plus de 1 Millions de flux par jour dans plus de 20 pays.</p>
-            </div>
-          </div>  
-        </section>
-        
-        <!-- SECTION 1 --> 
-        <section class="grid margin text-center">
+                <!-- SECTION 1 --> 
+                
+          <section class="grid margin text-center">
           <a href="/" class="s-12 m-6 l-3 padding-2x vertical-center margin-bottom background-red">
             <i class="icon-sli-equalizer text-size-60 text-white center margin-bottom-15"></i>
             <h3 class="text-strong text-size-20 text-line-height-1 margin-bottom-30 text-uppercase">Actus Gaming</h3>
@@ -158,98 +169,89 @@
             <h3 class="text-strong text-size-20 text-line-height-1 margin-bottom-30 text-uppercase">Toutes les catégories</h3>
           </a>
         </section>
-        
-        <!-- SECTION 2 -->
-        <section class="grid section margin-bottom background-dark">
-          <h2 class="s-12 l-6 center text-thin text-size-30 text-white text-uppercase margin-bottom-30">Responsive <b>Parallax Background</b></h2>
-          <p class="s-12 l-6 center">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-        </section>
-        
-        <!-- SECTION 3 --> 
-        <section class="grid margin">
-          <!-- Image-->
-          <img class="s-12 m-6 margin-bottom" src="img/img-01.jpg">
-        
-          <div class="s-12 m-6 padding-2x margin-bottom background-blue">
-            <h2 class="text-strong text-size-50 text-line-height-1">Nonummy nibh euismod tincidunt ut laoreet<br> massa nec orci accusamus auctor aute</h2>
-            <ul>
-              <li>Sed diam nonummy nibh euismod tincidunt ut laoreet</li> 
-              <li>Dolore magna aliquam erat volutpat</li>
-              <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</li>
-              <li>Sed diam nonummy nibh euismod tincidunt ut laoreet</li>
-              <li>Dolore magna aliquam erat volutpat</li>
-            </ul>
+        <!-- TOP SECTION -->
+          <div class="container">
+          <h1> Faites votre choix :  </h1>
+          <h5> Si aucun choix n'apparait, veuillez tout d'abord enregister des flux en cliquant sur l'onglet "Personnaliser"  </h5>
+              <select id="subcategory-select" style="background-color: #001f3f; color: white; font-family: 'Arial', sans-serif; font-weight: bold;">
+                  <option value="">Sélectionnez une sous-catégorie</option>
+                  @foreach ($parentCategories as $parentCategory)
+                      <optgroup label="{{ $parentCategory->name }}">
+                          @foreach ($parentCategory->children as $childCategory)
+                              @foreach ($childCategory->flux as $flux)
+                                  <option value="{{ $childCategory->id }}" data-feed-url="{{ $flux->url }}">{{ $childCategory->name }}</option>
+                              @endforeach
+                          @endforeach
+                      </optgroup>
+                  @endforeach
+              </select>
+              <div class="gridiv">
+                  <div id="rss-feed" class="grid-container"></div>
+              </div>
           </div>
-        </section>
-        
-        <!-- SECTION 4 -->
-        <h2 class="s-12 text-white text-thin text-size-30 text-white text-uppercase margin-top-bottom-40 center text-center">Top <b>References</b></h2>
-        <section class="grid margin">
-          <a class="s-12 m-6 margin-bottom" href="gallery.html">
-            <img class="full-img" src="img/portfolio/thumb-01.jpg" alt=""/>
-          </a>	
-          <a class="s-12 m-6 margin-bottom" href="gallery.html">
-            <img class="full-img" src="img/portfolio/thumb-02.jpg" alt=""/>
-          </a>	
-          <a class="s-12 m-6 margin-bottom" href="gallery.html">
-            <img class="full-img" src="img/portfolio/thumb-03.jpg" alt=""/>
-          </a>	
-          <a class="s-12 m-6 margin-bottom" href="gallery.html">
-            <img class="full-img" src="img/portfolio/thumb-04.jpg" alt=""/>
-          </a>	
-        </section>
-        
-        <!-- SECTION 5 -->
-        <section class="grid margin text-center">
-          <div class="m-12 l-4 padding-2x background-dark margin-bottom text-right">
-            <h3 class="text-strong text-size-25 text-uppercase margin-bottom-10">Let's keep in touch</h3>
-            <p>Deleniti pertinacia eu est, te his soluta quaestio pericula illum vulputate lobortis facilisis.</p>
-          </div>
-          <a href="/" class="s-12 m-6 l-2 padding vertical-center margin-bottom facebook hover-zoom">
-             <i class="icon-sli-social-facebook text-size-60 text-white center"></i>
-          </a>
-          <a href="/" class="s-12 m-6 l-2 padding vertical-center margin-bottom twitter hover-zoom">
-            <i class="icon-sli-social-twitter text-size-60 text-white center"></i>
-          </a>
-          <a href="/" class="s-12 m-6 l-2 padding vertical-center margin-bottom youtube hover-zoom">
-            <i class="icon-sli-social-youtube text-size-60 text-white center"></i>
-          </a>
-          <a href="/" class="s-12 m-6 l-2 padding vertical-center margin-bottom linkedin hover-zoom">
-            <i class="icon-sli-social-linkedin text-size-60 text-white center"></i>
-          </a>
-        </section>
-                
+        <section class="grid">
+            <!-- Div où vous souhaitez afficher le flux RSS -->
+        <!-- Script pour configurer et afficher le flux RSS -->
+            <script>
+                $(document).ready(function() {
+                    $('#subcategory-select').change(function() {
+                        var feedUrl = $(this).find('option:selected').data('feed-url');
+                        var categoryName = $(this).find('option:selected').text(); // Récupérer le nom de la catégorie
+                        $('#rss-feed').empty(); // Vide le contenu actuel du conteneur
+
+                        if (feedUrl) {
+                            // Afficher le nom de la catégorie
+                            $('#category-name').text(categoryName);
+
+                            // Récupérer le flux RSS avec Feednami
+                            feednami.load(feedUrl, function(result) {
+                                if (result.error) {
+                                    console.log("Erreur lors de la récupération du flux RSS:", result.error);
+                                } else {
+                                    var entries = result.feed.entries;
+
+                                    // Tri des entrées par date de publication (du plus récent au plus ancien)
+                                    entries.sort(function(a, b) {
+                                        var dateA = new Date(a.pubdate);
+                                        var dateB = new Date(b.pubdate);
+                                        return dateB - dateA; // Tri décroissant
+                                    });
+
+                                    // Parcourir les entrées triées du flux et les afficher dans le conteneur RSS
+                                    entries.forEach(function(entry) {
+                                        var articleHTML = '<div class="article">';
+                                        var pubDate = new Date(entry.pubdate);
+                                        var formattedDate = pubDate.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                                        articleHTML += '<p>Date de publication: ' + formattedDate + '</p>';
+                                        // Rendre le titre cliquable avec l'URL de l'article et ajouter une classe CSS spécifique
+                                        articleHTML += '<h3><a class="article-title" href="' + entry.link + '" target="_blank">' + entry.title + '</a></h3>';
+                                        
+                                        // Vérifier s'il y a une image dans l'entrée du flux
+                                        if (entry.enclosures && entry.enclosures.length > 0 && entry.enclosures[0].type.indexOf('image') !== -1) {
+                                            // Afficher l'image en miniature avec une taille maximale
+                                            articleHTML += '<img src="' + entry.enclosures[0].url + '" alt="Image de l\'article" style="max-width: 100px; max-height: 100px;">';
+                                        }
+
+                                        articleHTML += '</div>';
+                                        $('#rss-feed').append(articleHTML);
+                                    });
+                                }
+                            });
+                        } else {
+                            console.log("Aucune URL de flux RSS trouvée pour la catégorie sélectionnée.");
+                        }
+                    });
+                });
+            </script> 
+        </section>     
       </main>
       
        
       <!-- FOOTER -->
       <footer class="grid">
-        <!-- Footer - top -->
-        <!-- Image-->
-        <div class="s-12 l-3 m-row-3 margin-bottom background-image" style="background-image:url(img/img-04.jpg)"></div>
-        
-        <div class="s-12 m-9 l-3 padding-2x margin-bottom background-dark">
-           <h2 class="text-strong text-uppercase">Who We Are?</h2>
-           <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy.</p>
-        </div>
-        
-        <div class="s-12 m-9 l-3 padding-2x margin-bottom background-dark">
-           <h2 class="text-strong text-uppercase">Where We Are?</h2>
-           <img class="full-img" src="img/map.svg" alt=""/>
-        </div>
-        
-        <div class="s-12 m-9 l-3 padding-2x margin-bottom background-dark">
-           <h2 class="text-strong text-uppercase">Contact Us</h2>
-           <p><b class="text-primary margin-right-10">P</b> 0800 4521 800 50</p>
-           <p><b class="text-primary margin-right-10">M</b> <a class="text-primary-hover" href="mailto:contact@sampledomain.com">contact@sampledomain.com</a></p>
-           <p><b class="text-primary margin-right-10">M</b> <a class="text-primary-hover" href="mailto:office@sampledomain.com">office@sampledomain.com</a></p>
-        </div>
-        
         <!-- Footer - bottom -->
         <div class="s-12 text-center margin-bottom">
-          <p class="text-size-12">Copyright 2019, Vision Design - graphic zoo</p>
-          <p class="text-size-12">All images have been purchased from Bigstock. Do not use the images in your website.</p>
-          <p><a class="text-size-12 text-primary-hover" href="http://www.myresponsee.com" title="Responsee - lightweight responsive framework">Design and coding by Responsee Team</a></p>
+          <p class="text-size-12">Top Veille</p>
         </div>
       </footer>                                                                    
       <script type="text/javascript" src="js/responsee.js"></script>

@@ -35,6 +35,10 @@ Route::get('/about-us', function () {
     return view('about-us');
 });
 
+Route::get('/', function () {
+    return view('index');
+});
+
 Route::get('/gallery', [UserController::class, 'index'])->name('gallery'); // Définition de la route nommée "gallery"
 
 Route::put('/gallery/{id}', [UserController::class, 'updateUser'])->name('updateUser');

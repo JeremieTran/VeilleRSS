@@ -1,3 +1,16 @@
+<style>
+    .green-button {
+        background-color: green;
+        color: white;
+        padding: 2px 4px;
+        border-radius: 4px;
+        text-decoration: none; /* Supprimer le soulignement du lien */
+    }
+
+    .green-button:hover {
+        background-color: darkgreen;
+    }
+</style>
 <x-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
@@ -35,12 +48,14 @@
         <div class="flex items-center justify-end mt-4">
             @if (Route::has('password.request'))
                 <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
+                    {{ __('Mot de passe oublié?') }}
                 </a>
             @endif
-
+            <a href="{{ route('register') }}" class="green-button ms-3">
+                {{ __('Créer un compte') }}
+            </a>
             <x-primary-button class="ms-3">
-                {{ __('Log in') }}
+                {{ __('Valider') }}
             </x-primary-button>
         </div>
     </form>

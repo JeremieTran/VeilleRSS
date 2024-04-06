@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Models\FluxRss;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator; // Importer la classe Validator
+use App\Models\Category;
 
 class RssController extends Controller
 {
@@ -66,4 +67,12 @@ class RssController extends Controller
         // Redirection vers la même page avec un message de succès
         return redirect()->back()->with('success', 'Flux créé avec succès.');
     }
+    public function indexRss()
+    {
+        // Récupérer toutes les catégories avec leurs sous-catégories et les URL de flux RSS correspondantes
+        $parentCategories = Category::with('children')->get();
+    
+        return view('index', compact('parentCategories'));
+    }
+    
 }
