@@ -21,4 +21,8 @@ Pour l'installer
 - Changer les credentials dans le fichier .env
 - Effectuer php artisan migrate afin de copier les données dans la nouvelle base de données.
 - Télécharger le fichier archive
-- Extraire l'archive dans un dossier à la racine du serveur ou de l'émulateur 
+- Extraire l'archive dans un dossier à la racine du serveur ou de l'émulateur
+
+## Utilisation
+
+Le site est acessible depuis https://veillerss.jeremietran.fr
